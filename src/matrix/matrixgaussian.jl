@@ -59,9 +59,9 @@ function convert(::Type{MatrixGaussian{T}}, d::MatrixGaussian) where T <: Real
 end
 
 function convert(::Type{MatrixGaussian{T}}, M::AbstractMatrix, Σ::AbstractPDMat, logc0) where T <: Real
-    MM = convert(AbstractArray{T}, d.M)
-    ΣΣ = convert(AbstractArray{T}, d.Σ)
-    MatrixGaussian{T, typeof(MM), typeof(ΣΣ)}(MM, ΣΣ, T(d.logc0))
+    MM = convert(AbstractArray{T}, M)
+    ΣΣ = convert(AbstractArray{T}, Σ)
+    MatrixGaussian{T, typeof(MM), typeof(ΣΣ)}(MM, ΣΣ, T(logc0))
 end
 
 #  -----------------------------------------------------------------------------
@@ -126,7 +126,7 @@ function matrixgaussian_logc0(Σ::AbstractPDMat)
     -(mn / 2) * (logtwo + logπ) - (1 / 2) * logdet(Σ)
 end
 
-logkernel(d::MatrixGaussian, X::AbstractMatrix) = (vec(X - d.M)' * inv(d.Σ) * vec(X - d.M)) / -2
+logkernel(d::MatrixGaussian, X::AbstractMatrix) = (vec(X - d.M)' * Matrix(inv(d.Σ)) * vec(X - d.M)) / -2
 
 _logpdf(d::MatrixGaussian, X::AbstractMatrix) = logkernel(d, X) + d.logc0
 
