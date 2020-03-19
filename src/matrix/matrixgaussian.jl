@@ -5,7 +5,7 @@ M::AbstractMatrix  m x n mean
 Σ::AbstractPDMat   nm x nm covariance
 ```
 The [matrix Gaussian distribution](https://arxiv.org/pdf/1804.11010.pdf) generalizes the multivariate normal distribution to ``m\\times n`` real matrices ``\\mathbf{X}``.
-If ``\\mathbf{X}\\sim \\script{N}(\\mathbf{M}, \\mathbf{\\Sigma})``, then its
+If ``\\mathbf{X}\\sim {\\cal N}(\\mathbf{M}, \\mathbf{\\Sigma})``, then its
 probability density function is
 
 ```math
