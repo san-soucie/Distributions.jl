@@ -11,7 +11,6 @@ import JSON
 import ForwardDiff
 
 const tests = [
-    "matrixgaussian",
     "truncate",
     "truncnormal",
     "truncated_exponential",
@@ -40,6 +39,7 @@ const tests = [
     "matrixbeta",
     "matrixfdist",
     "matrixnormal",
+    "matrixgaussian",
     "matrixtdist",
     "lkj",
     "vonmisesfisher",
