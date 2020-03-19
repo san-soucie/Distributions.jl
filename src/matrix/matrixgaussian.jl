@@ -40,13 +40,13 @@ end
 
 MatrixGaussian(M::AbstractMatrix, Σ::Union{AbstractMatrix, LinearAlgebra.Cholesky}) = MatrixGaussian(M, PDMat(Σ))
 
-MatrixGaussian(m::Int, n::Int) = MatrixNormal(zeros(m, n), Matrix(1.0I, m*n, m*n))
+MatrixGaussian(m::Int, n::Int) = MatrixGaussian(zeros(m, n), Matrix(1.0I, m*n, m*n))
 
 #  -----------------------------------------------------------------------------
 #  REPL display
 #  -----------------------------------------------------------------------------
 
-show(io::IO, d::MatrixGaussian) = show_multline(io, d, [(:M, d.M), (:U, Matrix(d.Σ)))])
+show(io::IO, d::MatrixGaussian) = show_multline(io, d, [(:M, d.M), (:U, Matrix(d.Σ))])
 
 #  -----------------------------------------------------------------------------
 #  Conversion
@@ -79,7 +79,7 @@ function _Σ_to_S(d::MatrixGaussian{T}) where T
     return S
 end
 
-function _S_to_Σ(S::AbstractMatrix{t}) where T
+function _S_to_Σ(S::AbstractMatrix{T}) where T
     m², n² = size(S)
     m = √m²
     n = √n²
