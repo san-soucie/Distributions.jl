@@ -116,6 +116,7 @@ export
     MatrixNormal,
     MatrixGaussian,
     MatrixTDist,
+    MatrixProduct,
     MixtureModel,
     Multinomial,
     MultivariateNormal,
@@ -209,6 +210,7 @@ export
     sqmahal!,           # inplace evaluation of sqmahal
     location,           # get the location parameter
     location!,          # provide storage for the location parameter (used in multivariate distribution mvlognormal)
+    matrix_product_distribution, # product of multivariate distributions
     mean,               # mean of distribution
     meandir,            # mean direction (of a spherical distribution)
     meanform,           # convert a normal distribution from canonical form to mean form
@@ -317,8 +319,8 @@ Supported distributions:
     GeneralizedExtremeValue, Geometric, Gumbel, Hypergeometric,
     InverseWishart, InverseGamma, InverseGaussian, IsoNormal,
     IsoNormalCanon, Kolmogorov, KSDist, KSOneSided, Laplace, Levy,
-    Logistic, LogNormal, MatrixBeta, MatrixFDist, MatrixNormal, 
-    MatrixGaussian, MatrixTDist, MixtureModel, Multinomial, 
+    Logistic, LogNormal, MatrixBeta, MatrixFDist, MatrixNormal,
+    MatrixGaussian, MatrixTDist, MixtureModel, Multinomial,
     MultivariateNormal, MvLogNormal, MvNormal, MvNormalCanon,
     MvNormalKnownCov, MvTDist, NegativeBinomial, NoncentralBeta, NoncentralChisq,
     NoncentralF, NoncentralHypergeometric, NoncentralT, Normal, NormalCanon,

@@ -24,8 +24,8 @@ end
 size(d::MatrixProduct) = (length(d.v[1]), length(d))
 length(d::MatrixProduct) = length(d.v)
 rank(d::MatrixProduct) = minimum(size(d))
-mean(d::MatrixProduct) = hcat(mean.(d.v)...)
-var(d::MatrixProduct)  = hcat(var.(d.v)...)
+mean(d::MatrixProduct) = hcat(mean.(d.v)...)'
+var(d::MatrixProduct)  = hcat(var.(d.v)...)'
 function cov(d::MatrixProduct)
     a = cov.(d.v)
 
@@ -49,10 +49,12 @@ entropy(d::MatrixProduct) = sum(entropy, d.v)
 
 
 function _rand!(rng::AbstractRNG, d::MatrixProduct, x::AbstractMatrix)
-    x = hcat(rand.(rng, d.v[i])...)
+    x = hcat(rand.(Ref(rng), d.v[i])...)
 end
 
-insupport(d::MatrixProduct, x::AbstractVector{<:AbstractVector}) = all(insupport.(d.v, x))
+function insupport(d::MatrixProduct, x::AbstractVector{<:AbstractVector})
+    return length(d.v) == length(x) && all(insupport.(d.v, x))
+end
 insupport(d::MatrixProduct, x::AbstractMatrix) = insupport(d, Array.(eachcol(x)))
 
 function matrix_product_distribution(dists::AbstractVector{<:MultivariateDistribution})
@@ -60,7 +62,7 @@ function matrix_product_distribution(dists::AbstractVector{<:MultivariateDistrib
 end
 
 
-function matrix_product_distribution(dists::AbstractVector{<:MvNormal})
+function matrix_product_distribution(dists::AbstractVector{<:AbstractMvNormal})
     m = matrix_product_distribution(dists)
     return MatrixGaussian(mean(m), cov(m))
 end

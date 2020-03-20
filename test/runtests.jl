@@ -54,6 +54,7 @@ const tests = [
     "qq",
     "pgeneralizedgaussian",
     "product",
+    "matrixproduct",
     "discretenonparametric",
     "functionals",
     "chernoff",
