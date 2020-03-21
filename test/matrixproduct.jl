@@ -35,7 +35,7 @@ mvnormal_product = matrix_product_distribution(mvnormals)
 dirichlet_product = matrix_product_distribution(dirichlets)
 dirichlet_product_with_mode = matrix_product_distribution(dirichlets_with_mode)
 mixed_product = matrix_product_distribution(mixeds)
-mixed_product_with_mode = matrix_product_distribution(mixeds_with_modes)
+mixed_product_with_mode = matrix_product_distribution(mixeds_with_mode)
 bad_distributions = [mvnormals[1], Dirichlet(k-1, rand(rng))]
 
 mvnormal_product_draw = rand(rng, mvnormal_product)
