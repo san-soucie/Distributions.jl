@@ -50,6 +50,8 @@ cov(d::MatrixGaussian) = cov(d.N)
 
 var(d::MatrixGaussian) = reshape(var(d.N), size(d))
 
+entropy(d::MatrixGaussian) = entropy(d.N)
+
 params(d::MatrixGaussian) = (d.m, d.n, params(d.N)...)
 
 
@@ -67,7 +69,7 @@ _logpdf(d::MatrixGaussian, A::AbstractMatrix) = logpdf(d.N, vec(A))
 
 
 function _rand!(rng::AbstractRNG, d::MatrixGaussian, Y::AbstractMatrix)
-    Y .= reshape(rand(rng, d.N), d.m, d.n)
+    Y .= reshape(rand(rng, d.N), size(d))
 end
 
 #  -----------------------------------------------------------------------------

@@ -10,7 +10,7 @@ using HypothesisTests
 import JSON
 import ForwardDiff
 
-const tests = [    "matrixproduct",
+const tests = [
     "truncate",
     "truncnormal",
     "truncated_exponential",
@@ -54,6 +54,7 @@ const tests = [    "matrixproduct",
     "qq",
     "pgeneralizedgaussian",
     "product",
+    "matrixproduct",
     "discretenonparametric",
     "functionals",
     "chernoff",

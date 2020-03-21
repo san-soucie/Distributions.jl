@@ -24,8 +24,8 @@ end
 size(d::MatrixProduct) = (length(d.v[1]), length(d))
 length(d::MatrixProduct) = length(d.v)
 rank(d::MatrixProduct) = minimum(size(d))
-mean(d::MatrixProduct) = hcat(mean.(d.v)...)'
-var(d::MatrixProduct)  = hcat(var.(d.v)...)'
+mean(d::MatrixProduct) = hcat(mean.(d.v)...)
+var(d::MatrixProduct)  = hcat(var.(d.v)...)
 cov(d::MatrixProduct) = block_diagonal(cov.(d.v))
 _logpdf(d::MatrixProduct, x::AbstractVector{<:AbstractVector}) = sum(n->logpdf(d.v[n], x[n]), 1:length(d))
 _logpdf(d::MatrixProduct, x::AbstractMatrix) = _logpdf(d, Array.(eachcol(x)))
@@ -33,7 +33,7 @@ entropy(d::MatrixProduct) = sum(entropy, d.v)
 
 
 function _rand!(rng::AbstractRNG, d::MatrixProduct, x::AbstractMatrix)
-    return Array(hcat(rand.(Ref(rng), d.v)...)')
+    return hcat(rand.(Ref(rng), d.v)...)
 end
 
 function insupport(d::MatrixProduct, x::AbstractVector{<:AbstractVector})
