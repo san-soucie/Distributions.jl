@@ -94,6 +94,8 @@ function block_diagonal!(
     size_check || throw(ArgumentError(
         "out matrix should be appropriate size for provided blocks"))
     out *= zero(T)
+    sizes = size.(a)
+    d1, d2 = collect.(collect(zip(sizes...)))
     i1_bounds = [1, (1 .+ cumsum(d1, dims=1))...]
     i1_lower_bounds = i1_bounds[1:end-1]
     i1_upper_bounds = i1_bounds[2:end] .- 1
