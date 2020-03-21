@@ -68,7 +68,7 @@ end
 # for MatrixProduct covariances
 function block_diagonal(a::AbstractVector{<:AbstractArray})
     # creating a block diagonal matrix
-    all(size.(a) .<= 2) || throw(ArgumentError(
+    all(length.(size.(a)) .<= 2) || throw(ArgumentError(
         "All blocks should be matrices or vectors"))
     vec_or_mat = a[1 .<= length.(size.(x)) .<= 2] # Drop empty arrays
     ensure_mat = map(
