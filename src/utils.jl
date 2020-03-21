@@ -79,9 +79,9 @@ function block_diagonal!(
     a::AbstractVector{AbstractMatrix{T}}, out::AbstractMatrix{T}) where T
 
     # creating a block diagonal matrix
-    size_check = size(out) == tuple(sum.(collect(zip(size.(a)...)))...)
-    size_check || throw ArgumentError(
-        "out matrix should be appropriate size for provided blocks")
+    size_check = (size(out) == tuple(sum.(collect(zip(size.(a)...)))...))
+    size_check || throw(ArgumentError(
+        "out matrix should be appropriate size for provided blocks"))
     out *= zero(T)
     i1_bounds = [1, (1 .+ cumsum(d1, dims=1))...]
     i1_lower_bounds = i1_bounds[1:end-1]
