@@ -10,15 +10,7 @@ k = N
 μ = randn.(Ref(rng), fill(N, M))
 Σ = map(x -> x * x', randn.(Ref(rng), fill((N, N), M)))
 
-d1, d2 = collect(zip(size.(Σ)...))
-covariance = zeros(eltype(eltype(Σ)), sum(d1), sum(d2))
-i1 = 1
-i2 = 1
-for j = 1:length(Σ)
-    covariance[i1:i1+d1[j]-1, i2:i2+d2[j]-1] = Σ[j]
-    i1 += d1[j]
-    i2 += d2[j]
-end
+covariance = block_diagonal(Σ)
 mvnormals = MvNormal.(μ, Σ)
 dirichlets = Dirichlet.([k], rand(rng, M))
 dirichlets_with_mode = Dirichlet.([k], rand(rng, M) .+ 1.0)
@@ -26,26 +18,10 @@ mixeds = [MvNormal(μ[1], Σ[1]), Dirichlet(N, rand(rng))]
 mixeds_with_mode = [MvNormal(μ[1], Σ[1]), Dirichlet(N, rand(rng)+1.0)]
 
 Σ_dirichlet = cov.(dirichlets)
-d1, d2 = collect(zip(size.(Σ_dirichlet)...))
-covariance_dirichlet = zeros(eltype(eltype(Σ_dirichlet)), sum(d1), sum(d2))
-i1 = 1
-i2 = 1
-for j = 1:length(Σ_dirichlet)
-    covariance_dirichlet[i1:i1+d1[j]-1, i2:i2+d2[j]-1] = Σ_dirichlet[j]
-    i1 += d1[j]
-    i2 += d2[j]
-end
+covariance_dirichlet = block_diagonal(Σ_dirichlet)
 
 Σ_mixed = cov.(mixeds)
-d1, d2 = collect(zip(size.(Σ_mixed)...))
-covariance_mixed = zeros(eltype(eltype(Σ_mixed)), sum(d1), sum(d2))
-i1 = 1
-i2 = 1
-for j = 1:length(Σ_mixed)
-    covariance_mixed[i1:i1+d1[j]-1, i2:i2+d2[j]-1] = Σ_mixed[j]
-    i1 += d1[j]
-    i2 += d2[j]
-end
+covariance_mixed = block_diagonal(Σ_mixed)
 
 x_norm = rand.(Ref(rng), mvnormals)
 x_dir = rand.(Ref(rng), dirichlets)

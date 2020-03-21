@@ -64,3 +64,37 @@ function trycholesky(a::Matrix{Float64})
         return e
     end
 end
+
+# for MatrixProduct covariances
+function block_diagonal(a::AbstractVector{AbstractMatrix})
+    # creating a block diagonal matrix
+    sizes = size.(a)
+    d1, d2 = collect.(collect(zip(sizes...)))
+    out = zeros(eltype(eltype(a)), sum(d1), sum(d2))
+    block_diagonal!(a, out)
+    return out
+end
+
+function block_diagonal!(
+    a::AbstractVector{AbstractMatrix{T}}, out::AbstractMatrix{T}) where T
+
+    # creating a block diagonal matrix
+    size_check = size(out) == tuple(sum.(collect(zip(size.(a)...)))...)
+    size_check || throw ArgumentError(
+        "out matrix should be appropriate size for provided blocks")
+    out *= zero(T)
+    i1_bounds = [1, (1 .+ cumsum(d1, dims=1))...]
+    i1_lower_bounds = i1_bounds[1:end-1]
+    i1_upper_bounds = i1_bounds[2:end] .- 1
+
+    i2_bounds = [1, (1 .+ cumsum(d1, dims=1))...]
+    i2_lower_bounds = i2_bounds[1:end-1]
+    i2_upper_bounds = i2_bounds[2:end] .- 1
+
+    bounds = zip(i1_lower_bounds, i1_upper_bounds, i2_lower_bounds, i2_upper_bounds)
+    for j, (i1_l, i1_u, i2_l, i2_u) = enumerate(bounds)
+        out[i1_l:i1_u, i2_l:i2_u] = a[j]
+    end
+
+    return out
+end

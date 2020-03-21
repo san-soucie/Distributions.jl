@@ -26,23 +26,7 @@ length(d::MatrixProduct) = length(d.v)
 rank(d::MatrixProduct) = minimum(size(d))
 mean(d::MatrixProduct) = hcat(mean.(d.v)...)'
 var(d::MatrixProduct)  = hcat(var.(d.v)...)'
-function cov(d::MatrixProduct)
-    a = cov.(d.v)
-
-    # creating a block diagonal matrix
-    sizes = size.(a)
-    d1, d2 = collect(zip(sizes...))
-    out = zeros(eltype(eltype(a)), sum(d1), sum(d2))
-    i1 = 1
-    i2 = 1
-    for j = 1:length(a)
-        out[i1:i1+d1[j]-1, i2:i2+d2[j]-1] = a[j]
-        i1 += d1[j]
-        i2 += d2[j]
-    end
-
-    return out
-end
+cov(d::MatrixProduct) = block_diagonal(cov.(d.v))
 _logpdf(d::MatrixProduct, x::AbstractVector{<:AbstractVector}) = sum(n->logpdf(d.v[n], x[n]), 1:length(d))
 _logpdf(d::MatrixProduct, x::AbstractMatrix) = _logpdf(d, Array.(eachcol(x)))
 entropy(d::MatrixProduct) = sum(entropy, d.v)

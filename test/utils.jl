@@ -36,3 +36,24 @@ N = GenericArray([1.0 0.0; 1.0 0.0])
 
 @test Distributions.isApproxSymmmetric(N) == false
 @test Distributions.isApproxSymmmetric(M)
+
+mats = [[1 2; 3 4], [5 6]; [7]; [8 9 10; 11 12 13; 14 15 16]]
+bd_mat = [1  2  0  0  0  0  0  0;
+          3  4  0  0  0  0  0  0;
+          0  0  5  6  0  0  0  0;
+          0  0  0  0  7  0  0  0;
+          0  0  0  0  0  8  9 10;
+          0  0  0  0  0 11 12 13;
+          0  0  0  0  0 14 15 16;]
+
+mixed_mats = [[1 2; 3 4], Float32[5 6]; Float64[7]; [8 9 10; 11 12 13; 14 15 16]]
+bd_mix = Float64[1.0  2.0  0.0  0.0  0.0  0.0  0.0  0.0;
+                 3.0  4.0  0.0  0.0  0.0  0.0  0.0  0.0;
+                 0.0  0.0  5.0  6.0  0.0  0.0  0.0  0.0;
+                 0.0  0.0  0.0  0.0  7.0  0.0  0.0  0.0;
+                 0.0  0.0  0.0  0.0  0.0  8.0  9.0 10.0;
+                 0.0  0.0  0.0  0.0  0.0 11.0 12.0 13.0;
+                 0.0  0.0  0.0  0.0  0.0 14.0 15.0 16.0;]
+
+@test Distributions.block_diagonal(mats) == bd_mat
+@test Distributions.block_diagonal(mixed_mats) == bd_mix
