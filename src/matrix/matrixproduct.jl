@@ -33,7 +33,7 @@ entropy(d::MatrixProduct) = sum(entropy, d.v)
 
 
 function _rand!(rng::AbstractRNG, d::MatrixProduct, x::AbstractMatrix)
-    x = hcat(rand.(Ref(rng), d.v[i])...)
+    return Array(hcat(rand.(Ref(rng), d.v)...)')
 end
 
 function insupport(d::MatrixProduct, x::AbstractVector{<:AbstractVector})
