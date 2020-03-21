@@ -66,7 +66,7 @@ function trycholesky(a::Matrix{Float64})
 end
 
 # for MatrixProduct covariances
-function block_diagonal(a::AbstractVector{AbstractMatrix})
+function block_diagonal(a::AbstractVector{<:AbstractMatrix})
     # creating a block diagonal matrix
     sizes = size.(a)
     d1, d2 = collect.(collect(zip(sizes...)))
@@ -76,7 +76,7 @@ function block_diagonal(a::AbstractVector{AbstractMatrix})
 end
 
 function block_diagonal!(
-    a::AbstractVector{AbstractMatrix{T}}, out::AbstractMatrix{T}) where T
+    a::AbstractVector{<:AbstractMatrix{T}}, out::AbstractMatrix{T}) where T
 
     # creating a block diagonal matrix
     size_check = (size(out) == tuple(sum.(collect(zip(size.(a)...)))...))
