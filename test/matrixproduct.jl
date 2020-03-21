@@ -10,7 +10,7 @@ k = N
 μ = randn.(Ref(rng), fill(N, M))
 Σ = map(x -> x * x', randn.(Ref(rng), fill((N, N), M)))
 
-covariance = block_diagonal(Σ)
+covariance = Distributions.block_diagonal(Σ)
 mvnormals = MvNormal.(μ, Σ)
 dirichlets = Dirichlet.([k], rand(rng, M))
 dirichlets_with_mode = Dirichlet.([k], rand(rng, M) .+ 1.0)
@@ -18,10 +18,10 @@ mixeds = [MvNormal(μ[1], Σ[1]), Dirichlet(N, rand(rng))]
 mixeds_with_mode = [MvNormal(μ[1], Σ[1]), Dirichlet(N, rand(rng)+1.0)]
 
 Σ_dirichlet = cov.(dirichlets)
-covariance_dirichlet = block_diagonal(Σ_dirichlet)
+covariance_dirichlet = Distributions.block_diagonal(Σ_dirichlet)
 
 Σ_mixed = cov.(mixeds)
-covariance_mixed = block_diagonal(Σ_mixed)
+covariance_mixed = Distributions.block_diagonal(Σ_mixed)
 
 x_norm = rand.(Ref(rng), mvnormals)
 x_dir = rand.(Ref(rng), dirichlets)
