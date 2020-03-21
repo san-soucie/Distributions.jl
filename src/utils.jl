@@ -66,6 +66,16 @@ function trycholesky(a::Matrix{Float64})
 end
 
 # for MatrixProduct covariances
+
+function block_diagonal(a::AbstractVector{<:AbstractMatrix})
+    # creating a block diagonal matrix
+    b = a[broadcast(x -> x != [], a)] # Drop empty arrays
+    sizes = size.(b)
+    d1, d2 = collect.(collect(zip(sizes...)))
+    out = zeros(foldl(promote_type, eltype.(b)), sum(d1), sum(d2))
+    return block_diagonal!(b, out)
+end
+
 function block_diagonal(a::AbstractVector{<:AbstractArray})
     # creating a block diagonal matrix
     all(length.(size.(a)) .<= 2) || throw(ArgumentError(
@@ -76,13 +86,7 @@ function block_diagonal(a::AbstractVector{<:AbstractArray})
     return block_diagonal(ensure_mat)
 end
 
-function block_diagonal(a::AbstractVector{<:AbstractMatrix})
-    # creating a block diagonal matrix
-    sizes = size.(a)
-    d1, d2 = collect.(collect(zip(sizes...)))
-    out = zeros(eltype(eltype(a)), sum(d1), sum(d2))
-    return block_diagonal!(a, out)
-end
+
 
 function block_diagonal!(
     a::AbstractVector{<:AbstractMatrix{T}}, out::AbstractMatrix{T}) where T
