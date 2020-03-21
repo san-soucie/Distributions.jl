@@ -47,6 +47,6 @@ end
 
 
 function matrix_product_distribution(dists::AbstractVector{<:AbstractMvNormal})
-    m = matrix_product_distribution(dists)
+    m = MatrixProduct(dists)
     return MatrixGaussian(mean(m), cov(m))
 end
