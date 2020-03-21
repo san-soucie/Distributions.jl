@@ -92,7 +92,7 @@ function block_diagonal!(
     i2_upper_bounds = i2_bounds[2:end] .- 1
 
     bounds = zip(i1_lower_bounds, i1_upper_bounds, i2_lower_bounds, i2_upper_bounds)
-    for j, (i1_l, i1_u, i2_l, i2_u) = enumerate(bounds)
+    for (j, (i1_l, i1_u, i2_l, i2_u)) in enumerate(bounds)
         out[i1_l:i1_u, i2_l:i2_u] = a[j]
     end
 
