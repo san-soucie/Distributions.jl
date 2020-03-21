@@ -70,7 +70,7 @@ function block_diagonal(a::AbstractVector{<:AbstractArray})
     # creating a block diagonal matrix
     all(length.(size.(a)) .<= 2) || throw(ArgumentError(
         "All blocks should be matrices or vectors"))
-    vec_or_mat = a[a .!= []] # Drop empty arrays
+    vec_or_mat = a[broadcast(x -> x != [], a)] # Drop empty arrays
     ensure_mat = map(
         x -> (length(size(x)) == 2) ? x : reshape(x, (length(x), 1)), vec_or_mat)
     return block_diagonal(ensure_mat)
