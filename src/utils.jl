@@ -81,8 +81,7 @@ function block_diagonal(a::AbstractVector{<:AbstractMatrix})
     sizes = size.(a)
     d1, d2 = collect.(collect(zip(sizes...)))
     out = zeros(eltype(eltype(a)), sum(d1), sum(d2))
-    block_diagonal!(a, out)
-    return out
+    return block_diagonal!(a, out)
 end
 
 function block_diagonal!(
@@ -92,7 +91,7 @@ function block_diagonal!(
     size_check = (size(out) == tuple(sum.(collect(zip(size.(a)...)))...))
     size_check || throw(ArgumentError(
         "out matrix should be appropriate size for provided blocks"))
-    out *= zero(T)
+    out = out .* zero(T)
     sizes = size.(a)
     d1, d2 = collect.(collect(zip(sizes...)))
     i1_bounds = [1, (1 .+ cumsum(d1, dims=1))...]
@@ -105,7 +104,7 @@ function block_diagonal!(
 
     bounds = zip(i1_lower_bounds, i1_upper_bounds, i2_lower_bounds, i2_upper_bounds)
     for (j, (i1_l, i1_u, i2_l, i2_u)) in enumerate(bounds)
-        out[i1_l:i1_u, i2_l:i2_u] = a[j]
+        out[i1_l:i1_u, i2_l:i2_u] .= a[j]
     end
 
     return out
