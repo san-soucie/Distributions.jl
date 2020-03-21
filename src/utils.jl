@@ -68,7 +68,7 @@ end
 # for MatrixProduct covariances
 function block_diagonal(a::AbstractVector{Union{<:AbstractVector, <:AbstractMatrix}})
     # creating a block diagonal matrix
-    sizes = map(x -> (length(x) == 2) ? x : (x..., 1), size.(a)
+    sizes = map(x -> (length(x) == 2) ? x : (x..., 1), size.(a))
     d1, d2 = collect.(collect(zip(sizes...)))
     out = zeros(eltype(eltype(a)), sum(d1), sum(d2))
     ensure_mat_a = map(
