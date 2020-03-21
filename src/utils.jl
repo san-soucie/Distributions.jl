@@ -73,7 +73,7 @@ function block_diagonal(a::AbstractVector{<:AbstractArray})
     vec_or_mat = a[a .!= []] # Drop empty arrays
     ensure_mat = map(
         x -> (length(size(x)) == 2) ? x : reshape(x, (length(x), 1)), vec_or_mat)
-    block_diagonal(ensure_mat)
+    return block_diagonal(ensure_mat)
 end
 
 function block_diagonal(a::AbstractVector{<:AbstractMatrix})
@@ -82,6 +82,7 @@ function block_diagonal(a::AbstractVector{<:AbstractMatrix})
     d1, d2 = collect.(collect(zip(sizes...)))
     out = zeros(eltype(eltype(a)), sum(d1), sum(d2))
     block_diagonal!(a, out)
+    return out
 end
 
 function block_diagonal!(
