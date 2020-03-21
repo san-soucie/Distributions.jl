@@ -25,7 +25,7 @@ covariance_mixed = Distributions.block_diagonal(Σ_mixed)
 
 x_norm = rand.(Ref(rng), mvnormals)
 x_dir = rand.(Ref(rng), dirichlets)
-x_mix = rand.(Ref(rng), mixed)
+x_mix = rand.(Ref(rng), mixeds)
 
 X_norm = hcat(x_norm...)'
 X_dir = hcat(x_dir...)'
