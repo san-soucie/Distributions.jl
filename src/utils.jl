@@ -72,8 +72,10 @@ function block_diagonal(a::AbstractVector{<:AbstractMatrix})
     b = a[broadcast(x -> x != [], a)] # Drop empty arrays
     sizes = size.(b)
     d1, d2 = collect.(collect(zip(sizes...)))
-    out = zeros(foldl(promote_type, eltype.(b)), sum(d1), sum(d2))
-    return block_diagonal!(b, out)
+    T = foldl(promote_type, eltype.(b))
+    out = zeros(T, sum(d1), sum(d2))
+    c = broadcast(x -> x .+ zero(T), b)
+    return block_diagonal!(c, out)
 end
 
 function block_diagonal(a::AbstractVector{<:AbstractArray})
@@ -89,9 +91,10 @@ end
 
 
 function block_diagonal!(
-    a::AbstractVector{<:AbstractMatrix{T}}, out::AbstractMatrix{T}) where T
+    b::AbstractVector{<:AbstractMatrix{T}}, out::AbstractMatrix{T}) where T
 
     # creating a block diagonal matrix
+    a = b[broadcast(x -> x != [], b)]
     size_check = (size(out) == tuple(sum.(collect(zip(size.(a)...)))...))
     size_check || throw(ArgumentError(
         "out matrix should be appropriate size for provided blocks"))
